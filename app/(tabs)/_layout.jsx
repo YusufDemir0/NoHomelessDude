@@ -1,15 +1,16 @@
 import TabBarIconAndText from '../../components/customTabBar/tabBarIconAndText'
-import userIcon from "../../assets/icons/person.png"
+import userIcon from "../../assets/icons/user.png"
 import homeIcon from "../../assets/icons/home.png"
 import { Tabs } from 'expo-router'
-
+import { colors } from '../../constands/appConstand'
 
 const TabLayout = () => {
 
   const tabScreenOptions = {
                tabBarShowLabel:false,
-               tabBarActiveTintColor:"orange",
-               tabBarInactiveTintColor:"gray", 
+               tabBarActiveTintColor:colors.primary,
+               tabBarInactiveTintColor:colors.secondary, 
+               
   } 
  
   return (

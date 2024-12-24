@@ -1,8 +1,23 @@
 
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PostCard from '../../components/customCards/postCard'
+import { colors, fonts, spaces } from '../../constands/appConstand'
+import appIcon from "../../assets/icons/appIcon.png"
+
+
+const FlatHeaderComp = () => {
+       return <>
+                  <View style={styles.flatHeaderCompWrapperStyle}>
+                      <View>
+                        <Text style={styles.flactHeaderCompTitleStyle}>Welcome Back</Text>
+                        <Text style={styles.flatHeaderCompSubTitleStyle}>Egemen</Text>
+                      </View>
+                      <Image style={styles.flatHeaderCompAppIconStyle} source={appIcon} />
+                  </View>
+              </>
+}
 
 const Home = () => {
    
@@ -11,6 +26,7 @@ const Home = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
             <FlatList
+              style={styles.flatListStyle}
               data={DUMMY_DATA}
               keyExtractor={(item) => {
                     return item.id;
@@ -18,7 +34,7 @@ const Home = () => {
               renderItem={({item}) => {
                     return <PostCard post={item}  />
               }}
-
+              ListHeaderComponent={<FlatHeaderComp />}
             />
     </SafeAreaView>
   )
@@ -26,11 +42,36 @@ const Home = () => {
 
 const styles = StyleSheet.create({
       safeArea : {
-           backgroundColor:"gray",
+           backgroundColor:colors.background,
            width:"100%",
            height:"100%",
-           borderColor:"white",
-           borderWidth:3
+           paddingVertical:spaces.high,
+           paddingHorizontal:spaces.middle
+      },
+      flatListStyle:{
+         width:"100%",
+         height:"100%" 
+      },
+      flatHeaderCompWrapperStyle : {
+              flexDirection:"row",
+              justifyContent:"space-between",
+              alignItems:"center",
+              marginBottom:spaces.middle
+      },
+      flatHeaderCompAppIconStyle : {
+             width:50,
+             height:50,
+             resizeMode:"cover"
+      },
+      flactHeaderCompTitleStyle:{
+            fontSize:fonts.smallMidFontSize,
+            fontWeight:fonts.smallFontWeight,
+            color:colors.text
+      },
+      flatHeaderCompSubTitleStyle:{
+            fontSize:fonts.highFontSize,
+            fontWeight:fonts.highFontWeight,
+            color:colors.text
       }
 })
 

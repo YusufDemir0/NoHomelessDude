@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomTouchableButton from '../../components/customButtons/customTouchableButton'
 import FormField from '../../components/customForm/formField'
 import { Link,router } from 'expo-router'
-
+import {colors,fonts,spaces,shadows,borderRadius} from "../../constands/appConstand"
 
 const Login = () => {
  
@@ -23,12 +23,12 @@ const [formState , setFormState ] = useState({email:"",password:""});
                       <Text style={styles.subTitle}>Sign in to access your account.</Text>
                       <FormField value={formState.email} labelText='E-mail' keyboardType="email-address" placeholder={"E-mail"} onChange={value => {setFormState(oldState => {
                          return {...oldState,email:value}
-                      })}} containerStyle={{marginTop:10,marginBottom:20}} />
+                      })}} focusColor={colors.primary} containerStyle={styles.formContainerStyle} textInputStyle={styles.formLabelStyle} />
                       <FormField value={formState.password} labelText='Password' keyboardType="numeric" placeholder={"Password"} onChange={value => {setFormState(oldState => {
                          return {...oldState,password:value}
-                      })}} containerStyle={{marginTop:10,marginBottom:10}} />  
-                     <Text style={styles.infoText}>Don't Have an Account ? <Link href={"/register"} style={{color:"orange"}}>Register</Link></Text> 
-                      <CustomTouchableButton text="Login" onPress={onSubmit} buttonStyle={{marginTop:40}}/>
+                      })}}focusColor={colors.primary} containerStyle={styles.formContainerStyle} textInputStyle={styles.formLabelStyle}/>  
+                     <Text style={styles.infoText}>Don't Have an Account ? <Link href={"/register"} style={{color:colors.primary}}>Register</Link></Text> 
+                      <CustomTouchableButton text="Login" onPress={onSubmit} textStyle={styles.btnTextStyle} buttonStyle={styles.btnStyle}/>
                 </View>
           </ScrollView>
     </SafeAreaView>
@@ -44,30 +44,45 @@ const styles = StyleSheet.create({
         }, 
         content : {
             height:"100%",
-            paddingTop:50,
-            paddingHorizontal:10,
-            alignItems:"center",
-            backgroundColor:"white"
+            paddingVertical:spaces.high,
+            paddingHorizontal:spaces.middle,
+            alignItems:"flex-start",
+            justifyContent:"flex-start",
+            backgroundColor:colors.background
         },
         header: {
-           textAlign:"center",
-           fontSize : 32,
-           fontWeight:"800",
-           marginVertical:20
+           color:colors.text,
+           fontSize :fonts.highFontSize,
+           fontWeight:fonts.highFontWeight,
+           marginBottom:spaces.middle
         },
         subTitle: {
-           textAlign:"center",
-           fontSize:20,
-           fontWeight:"400",
-           marginBottom:10 
+           color:colors.text,
+           fontSize:fonts.smallMidFontSize,
+           fontWeight:fonts.smallFontWeight,
+           marginBottom:spaces.middle 
+        },
+        formContainerStyle : {
+            marginBottom:spaces.high
+        },
+        formLabelStyle:{
+            color:colors.text
         },
         infoText:{
+           color:colors.text,
            textAlign:"right",
            width:"100%",
-           fontSize:14,
-           fontWeight:"400",
-           marginBottom:20, 
-           marginTop:10
+           fontSize:fonts.smallFontSize,
+           fontWeight:fonts.smallFontWeight,
+           marginVertical:spaces.high, 
+        },
+        btnStyle:{
+            backgroundColor:colors.primary,
+            color:colors.background,
+            marginTop:spaces.high
+        },
+        btnTextStyle:{
+         color:colors.background
         }
 })
 
