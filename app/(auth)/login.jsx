@@ -4,14 +4,15 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomTouchableButton from '../../components/customButtons/customTouchableButton'
 import FormField from '../../components/customForm/formField'
-import { Link } from 'expo-router'
+import { Link,router } from 'expo-router'
+
 
 const Login = () => {
  
 const [formState , setFormState ] = useState({email:"",password:""});
 
  const onSubmit = () => {
-
+       router.replace("/home")
  } 
 
   return (

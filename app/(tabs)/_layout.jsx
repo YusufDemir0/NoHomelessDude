@@ -1,22 +1,40 @@
+import TabBarIconAndText from '../../components/customTabBar/tabBarIconAndText'
+import userIcon from "../../assets/icons/person.png"
+import homeIcon from "../../assets/icons/home.png"
+import { Tabs } from 'expo-router'
 
-
-import { View, Text } from 'react-native'
-import { Tabs,Redirect } from 'expo-router'
 
 const TabLayout = () => {
+
+  const tabScreenOptions = {
+               tabBarShowLabel:false,
+               tabBarActiveTintColor:"orange",
+               tabBarInactiveTintColor:"gray", 
+  } 
+ 
   return (
     <>
        <Tabs>
-           <Tabs.Screen 
+             <Tabs.Screen 
            name='home'
            options={{
-               title:"Home"
+               title:"Home",
+               headerShown:false,
+               ...tabScreenOptions,
+               tabBarIcon :({color , focused}) => {
+                   return <TabBarIconAndText color={color} focused={focused} label={"Home"} icon={homeIcon} />
+               },
            }}
             />
              <Tabs.Screen 
            name='profile'
            options={{
-               title:"Profile"
+               title:"Profile",
+               headerShown:false,
+               ...tabScreenOptions,
+               tabBarIcon :({color , focused}) => {
+                   return <TabBarIconAndText color={color} focused={focused} label={"Profile"} icon={userIcon} />
+               }
            }}
             />
        </Tabs>   
