@@ -30,7 +30,8 @@ export const borderRadius = {
       smallRadius : 4,
       middleRadius:8,
       highRadius:12,
-      circleRadius:"50%" 
+      circleRadius: (compWidth) => compWidth / 2,  
+      generateRadius : (compWidth,rate) => compWidth / rate
 }
 
 export const spaces = {

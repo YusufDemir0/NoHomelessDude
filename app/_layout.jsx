@@ -1,14 +1,14 @@
-
 import { Stack } from "expo-router";
-import { StatusBar } from 'expo-status-bar';
 
 const RootLayout = () => {
+  const options = {headerShown:false}
   return (
     <>
         <Stack >
-             <Stack.Screen name="index" options={{headerShown:false}}/>
-             <Stack.Screen name="(auth)" options={{headerShown:false}} />
-             <Stack.Screen name="(tabs)" options={{headerShown:false}} />
+             <Stack.Screen name="index" options={options}/>
+             <Stack.Screen name="(auth)" options={options} />
+             <Stack.Screen name="(tabs)" options={options} />
+             <Stack.Screen name="search" options={options} />
         </Stack>
     </>
   )

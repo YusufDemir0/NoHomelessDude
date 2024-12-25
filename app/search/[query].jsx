@@ -1,24 +1,19 @@
 
-import {StyleSheet, FlatList} from 'react-native'
+import {StyleSheet, FlatList } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PostCard from '../../components/customCards/postCard'
-import { colors, spaces } from '../../constands/appConstand'
+import { colors,spaces } from '../../constands/appConstand'
 import FlatHeaderComp from '../../components/pageComponents/home/homeFlatHeaderComp'
 import FlatEmptyComp from '../../components/pageComponents/home/homeFlatEmptyComp'
-import emptyData from "../../assets/images/emptyData.png"
-import { router } from 'expo-router'
-import appIcon from "../../assets/images/appImage.png"
+import emptySearch from "../../assets/images/emptySearch.png"
+import { useLocalSearchParams, usePathname } from 'expo-router'
 
-
-const Home = () => {
-   
-  const DUMMY_DATA = [{id : 1 , needs : ["a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id : 2, needs : ["a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id:3, needs : ["a","b","c","a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"}]   
-  
-  const onSearch = (query) => {
-       router.replace(`/search/${query}`)
-  }
-
+const SearchQuery = () => {
+  const {query} = useLocalSearchParams()
+  const path = usePathname();
+  console.log("path : ",path," X query : ",query)
+  const DUMMY_DATA = [];
   return (
     <SafeAreaView  style={styles.safeArea}>
             <FlatList
@@ -32,8 +27,8 @@ const Home = () => {
               renderItem={({item}) => {
                     return <PostCard post={item}  />
               }}
-              ListHeaderComponent={<FlatHeaderComp onSearch={onSearch} placeholder={"Search User"} subtitle={"Egemen"} title={"WELCOME BACK"} rightIcon={appIcon} />}
-              ListEmptyComponent={<FlatEmptyComp  description={"Post not found. Try Again Later"} imgSource={emptyData} />}
+              ListHeaderComponent={<FlatHeaderComp title={"SEARCH USER"} subtitle={query} initialValue={query} placeholder={"Search User"} />}
+              ListEmptyComponent={<FlatEmptyComp imgSource={emptySearch} description={"No data suitable for the query was found."} />}
             />
     </SafeAreaView>
   )
@@ -54,4 +49,4 @@ const styles = StyleSheet.create({
     
 })
 
-export default Home
+export default SearchQuery

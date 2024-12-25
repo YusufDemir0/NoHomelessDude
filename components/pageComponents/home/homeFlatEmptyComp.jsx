@@ -1,14 +1,13 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
-import emptyData2 from "../../../assets/images/emptyData.png"
 import { colors, fonts, spaces } from '../../../constands/appConstand'
 
 
-const FlatEmptyComp = () => {
+const FlatEmptyComp = ({imgSource,description,textStyle}) => {
   return (
     <View style={styles.wrapper}>
-      <Image style={styles.imgStyle}  source={emptyData2} />
-      <Text style={styles.txtStyle}>Post not found. Try Again Later</Text>
+      <Image style={styles.imgStyle}  source={imgSource} />
+      <Text style={{...styles.txtStyle,...textStyle}}>{description}</Text>
     </View>
   )
 }

@@ -29,7 +29,7 @@ const style = StyleSheet.create({
            width:"100%",
            position:"relative",
            height:50,
-           backgroundColor:"rgb(215, 206, 206)",
+           backgroundColor:"rgb(202, 208, 226)",
            elevation:4, 
            borderRadius:8,
            borderWidth:2,

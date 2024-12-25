@@ -1,17 +1,16 @@
 import { Image, StyleSheet, Text, View } from "react-native"
-import appIcon from "../../../assets/images/appImage.png"
-import { colors,fonts,spaces } from "../../../constands/appConstand"
+import { colors,fonts,shadows,spaces } from "../../../constands/appConstand"
 import SearchField from '../../customForm/searchField'
 
 
-const FlatHeaderComp = ({placeholder,onSearch,initialValue}) => {
+const FlatHeaderComp = ({placeholder,onSearch,initialValue,title,subtitle,rightIcon=null}) => {
     return <>
                <View style={styles.flatHeaderCompWrapperStyle}>
                    <View>
-                     <Text style={styles.flactHeaderCompTitleStyle}>Welcome Back</Text>
-                     <Text style={styles.flatHeaderCompSubTitleStyle}>Egemen</Text>
+                     <Text style={styles.flactHeaderCompTitleStyle}>{title}</Text>
+                     <Text style={styles.flatHeaderCompSubTitleStyle}>{subtitle}</Text>
                    </View>
-                   <Image style={styles.flatHeaderCompAppIconStyle} source={appIcon} />
+                   {rightIcon != null && <Image style={styles.flatHeaderCompAppIconStyle} source={rightIcon} />}
                </View>
                <SearchField inputWrapper={styles.flatHeaderCompSearchStyle} onSearch={onSearch} placeholder={placeholder} initialValue={initialValue} focusColor={colors.primary}  />
            </>
@@ -30,7 +29,7 @@ flatHeaderCompAppIconStyle : {
        resizeMode:"cover"
 },
 flactHeaderCompTitleStyle:{
-      fontSize:fonts.smallMidFontSize,
+      fontSize:fonts.smallFontSize,
       fontWeight:fonts.smallFontWeight,
       color:colors.text
 },
@@ -40,7 +39,8 @@ flatHeaderCompSubTitleStyle:{
       color:colors.text
 },
 flatHeaderCompSearchStyle : {
-      marginBottom:spaces.high
+      marginBottom:spaces.high,
+      elevation:shadows.smallShadow
 }
 })
 
