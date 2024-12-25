@@ -10,12 +10,14 @@ const TabLayout = () => {
                tabBarShowLabel:false,
                tabBarActiveTintColor:colors.primary,
                tabBarInactiveTintColor:colors.secondary, 
-               
+              
   } 
  
   return (
     <>
-       <Tabs>
+       <Tabs screenOptions={{
+               tabBarHideOnKeyboard:true
+       }}>
              <Tabs.Screen 
            name='home'
            options={{
