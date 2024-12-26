@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'reac
 import React, { useState } from 'react'
 import openEye from "../../assets/icons/openEye.png"
 import closeEye from "../../assets/icons/closeEye.png"
+import { borderRadius, shadows, spaces } from '../../constands/appConstand'
 
 
 const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardType,onChange,containerStyle,inputWrapper,textInputStyle}) => {
@@ -42,15 +43,15 @@ const style = StyleSheet.create({
       labelStyle:{
          color:"rgba(0, 0, 0,.6)",
          width:"100%",
-         marginBottom:5
+         marginBottom:spaces.small
       }, 
       wrapper : {
            width:"100%",
            position:"relative",
            height:50,
            backgroundColor:"rgb(202, 208, 226)",
-           elevation:4, 
-           borderRadius:8,
+           elevation:shadows.smallShadow, 
+           borderRadius:borderRadius.middleRadius,
            borderWidth:2,
                 },
        passwordIconWrapperStyle:{
