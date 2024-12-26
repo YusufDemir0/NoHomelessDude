@@ -8,6 +8,7 @@ import FlatEmptyComp from '../../components/pageComponents/home/homeFlatEmptyCom
 import emptyData from "../../assets/images/emptyData.png"
 import { router } from 'expo-router'
 import FlatProfileHeader from '../../components/pageComponents/profile/flatProfileHeader'
+import deleteIcon from "../../assets/icons/delete.png";
 
 
 const Profile = () => {
@@ -27,7 +28,7 @@ const Profile = () => {
                     return item.id;
               }}   
               renderItem={({item}) => {
-                    return <PostCard post={item}  />
+                    return <PostCard post={item} bottomButtonIcon={deleteIcon} />
               }}
               ListHeaderComponent={<FlatProfileHeader />}
               ListEmptyComponent={<FlatEmptyComp  description={"User's Posts not found."} imgSource={emptyData} />}

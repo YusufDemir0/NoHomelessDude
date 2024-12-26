@@ -1,11 +1,12 @@
 
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { borderRadius, colors, fonts, shadows, spaces } from '../../constands/appConstand'
 import userAvatar from "../../assets/images/userAvatar1.png"
 import PostCardOpanableSection from './postCardOpenableSection'
 
-const PostCard = ({post:{adress,creater,needs,updateDate}}) => {
+
+const PostCard = ({post:{adress,description,creater,needs,updateDate},bottomButtonIcon=null,bottomButtonClick=() => {}}) => {
     return (
             <View style={styles.cardWrapper}>
                <View style={styles.cardHeader}>
@@ -16,7 +17,16 @@ const PostCard = ({post:{adress,creater,needs,updateDate}}) => {
                     <Text style = {styles.cardHeaderTimeTextStyle}>1h</Text>
                </View>
                <PostCardOpanableSection title={"Adress"} data={[adress]} activeHeight={80} wrapperStyle={{marginBottom:spaces.middle}} />
+               <PostCardOpanableSection title={"Description"} data={[description]} activeHeight={80} wrapperStyle={{marginBottom:spaces.middle}} />
                <PostCardOpanableSection title={"Needs"}  data={[...needs]} activeHeight={150}  wrapperStyle={{marginBottom:spaces.middle}} />
+               {
+               bottomButtonIcon !== null && 
+               <View style={styles.bottomWrapper}>
+                    <TouchableOpacity style={styles.bottomButton}  onPress={bottomButtonClick}>
+                         <Image style={styles.bottomButtonIcon} source={bottomButtonIcon} />
+                    </TouchableOpacity>
+               </View>
+               }
             </View>
   )
 }
@@ -71,6 +81,16 @@ const styles =StyleSheet.create({
                 borderRadius:borderRadius.middleRadius, 
                 backgroundColor:colors.primary,
                 elevation:shadows.smallShadow
+          },
+          bottomWrapper : {
+                 width:"100%",alignItems:"center",marginBottom:spaces.small
+          },
+          bottomButton : {
+               justifyContent:"center",alignItems:"center",elevation:shadows.smallShadow,
+               width:35,height:35,borderRadius:borderRadius.circleRadius(35),backgroundColor:colors.background
+          },
+          bottomButtonIcon : {
+              width:25,height:25,resizeMode:"contain",tintColor:colors.primary,elevation:shadows.smallShadow
           }
 })
 

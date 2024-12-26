@@ -6,7 +6,7 @@ import closeEye from "../../assets/icons/closeEye.png"
 import { borderRadius, shadows, spaces } from '../../constands/appConstand'
 
 
-const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardType,onChange,containerStyle,inputWrapper,textInputStyle}) => {
+const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardType,onChange,containerStyle,inputWrapper,textInputStyle,isEditable=true}) => {
   const [isFocus,setIsFocus] = useState(false)
   const [isPasswordOpen , setIsPasswordOpen] = useState(false)
   const onPasswordChangeType = () => {
@@ -19,6 +19,7 @@ const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardTy
       <Text style={{...style.labelStyle,...textInputStyle}}>{labelText}</Text>
       <View style={{...style.wrapper,...{borderColor:isFocus ? focusColor : "transparent"},...inputWrapper}}>
        <TextInput style={{...style.input}} 
+       editable={isEditable}
        value={value}
        placeholder={placeholder} 
        placeholderTextColor={"rgba(0, 0, 0,.3)"} 
