@@ -8,7 +8,7 @@ import { borderRadius, shadows, spaces } from '../../constands/appConstand'
 
 const FormField = ({value,labelText="",focusColor="black",textAlignVertical="center",placeholder,keyboardType,rightIcon=null,onRightIconClick=() => {},onChange,containerStyle,inputWrapper,textInputStyle,isEditable=true,multiLine=false}) => {
   const [isFocus,setIsFocus] = useState(false)
-  const [isPasswordOpen , setIsPasswordOpen] = useState(false)
+  const [isPasswordOpen , setIsPasswordOpen] = useState(true)
   const onPasswordChangeType = () => {
        setIsPasswordOpen(oldState => {
               return !oldState
