@@ -16,8 +16,8 @@ const PostCard = ({post:{adress,description,creater,needs,updateDate},bottomButt
                     </View>
                     <Text style = {styles.cardHeaderTimeTextStyle}>1h</Text>
                </View>
-               <PostCardOpanableSection title={"Adress"} data={[adress]} activeHeight={80} wrapperStyle={{marginBottom:spaces.middle}} />
-               <PostCardOpanableSection title={"Description"} data={[description]} activeHeight={80} wrapperStyle={{marginBottom:spaces.middle}} />
+               <PostCardOpanableSection title={"Adress"} data={[adress]} activeHeight={80} sectionItemHeight={60} wrapperStyle={{marginBottom:spaces.middle}} />
+               <PostCardOpanableSection title={"Description"} data={[description]} activeHeight={80} sectionItemHeight={60} wrapperStyle={{marginBottom:spaces.middle}} />
                <PostCardOpanableSection title={"Needs"}  data={[...needs]} activeHeight={150}  wrapperStyle={{marginBottom:spaces.middle}} />
                {
                bottomButtonIcon !== null && 

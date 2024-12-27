@@ -13,7 +13,7 @@ import appIcon from "../../assets/images/appImage.png"
 
 const Home = () => {
    
-  const DUMMY_DATA = [{id : 1 , needs : ["a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id : 2,description:"some one needs in there !!!", needs : ["a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id:3, needs : ["a","b","c","a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"}]   
+  const DUMMY_DATA = [{id : 1 , needs : ["a","b","c"],description:"some one needs in there !!!",adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id : 2,description:"some one needs in there !!!", needs : ["a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id:3,description:"some one needs in there !!!", needs : ["a","b","c","a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"}]   
   
   const onSearch = (query) => {
        router.replace(`/search/${query}`)

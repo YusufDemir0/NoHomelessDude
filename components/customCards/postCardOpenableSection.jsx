@@ -5,7 +5,7 @@ import downArrow from "../../assets/icons/downArrow.png"
 import { borderRadius, colors, fonts, shadows, spaces } from '../../constands/appConstand'
 
 
-const PostCardOpanableSection = ({title,data=[],activeHeight,wrapperStyle}) => {
+const PostCardOpanableSection = ({title,data=[],activeHeight,sectionItemHeight=40,wrapperStyle}) => {
   const [isOpen,setIsOpen] = useState({isOpen:false})
   const onClick = () => {
        setIsOpen(oldState => {
@@ -20,11 +20,11 @@ const PostCardOpanableSection = ({title,data=[],activeHeight,wrapperStyle}) => {
             <TouchableOpacity onPress={e => onClick()}>
                 <Image style={styles.staticSectionIconStyle} source={isOpen.isOpen ? upArrow : downArrow } />
             </TouchableOpacity>   
-            <Text numberOfLines={1} style={styles.staticSectionTextStyle}>{title}</Text>              
+            <Text numberOfLines={1} style={[styles.staticSectionTextStyle]}>{title}</Text>              
         </View>
         <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false} style={{height:activeHeight,marginTop:25}} >
           {data.map((value,index) => {
-               return  <Text numberOfLines={2} style={styles.scrollItemStyle} key={index} >{value}</Text>
+               return  <Text numberOfLines={2} style={[styles.scrollItemStyle,{height:sectionItemHeight}]} key={index} >{value}</Text>
           })}  
         </ScrollView>
     </View>
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
       
       scrollItemStyle : {
            width:"100%",
-           height:40,
            marginVertical:spaces.small,
            padding:spaces.small-2 ,
            backgroundColor:colors.background,

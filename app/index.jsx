@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import onBoard from "../assets/images/onBoard.png"
 import CustomTouchableButton from '../components/customButtons/customTouchableButton';
 import {colors,spaces,fonts,shadows} from "../constands/appConstand"
+import goal from "../assets/icons/goal.png"
 
 export default function App() {
 
@@ -17,7 +18,18 @@ export default function App() {
                <View style={styles.container}>
                    <Image source={onBoard} style={styles.onBoardImg} />                   
                    <Text style={styles.subTitle}>Together, we can make a difference.</Text>
-                   <Text style={styles.desc}>Join our mission to support individuals in need.Share locations, provide help, and connect with a compassionate community to fight homelessness.</Text>
+                   <View style={styles.descWrapper}>
+                      <Image style={styles.descIcon} source={goal} />
+                      <Text style={styles.descText}>Join our mission to support individuals in need</Text>
+                   </View>
+                   <View style={styles.descWrapper}>
+                      <Image style={styles.descIcon} source={goal} />
+                      <Text style={styles.descText}>JShare locations, provide help.</Text>
+                   </View>
+                   <View style={styles.descWrapper}>
+                      <Image style={styles.descIcon} source={goal} />
+                      <Text style={styles.descText}> And connect with a compassionate community to fight homelessness.</Text>
+                   </View>
                    <CustomTouchableButton text={"Start"} onPress={onPress} buttonStyle={styles.btnStyle} textStyle={styles.btnTextStyle} />
                </View>  
             </ScrollView>
@@ -53,8 +65,17 @@ const styles = StyleSheet.create({
           fontWeight:fonts.highFontWeight,
           marginBottom:spaces.middle
                 } ,
-    desc :      {
-            textAlign:"center",
+    descWrapper : {
+         width:"100%",flexDirection:"row"
+    },            
+    descIcon : {
+        width:25,height:25,resizeMode:"contain",
+        color:colors.text,
+        fontSize:fonts.smallMidFontSize,
+        fontWeight:fonts.smallFontWeight,
+    }  ,          
+    descText :{
+            flexShrink:1,
             color:colors.text,
             fontSize:fonts.smallMidFontSize,
             fontWeight:fonts.smallFontWeight,

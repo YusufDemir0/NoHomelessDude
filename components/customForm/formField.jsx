@@ -6,7 +6,7 @@ import closeEye from "../../assets/icons/closeEye.png"
 import { borderRadius, shadows, spaces } from '../../constands/appConstand'
 
 
-const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardType,onChange,containerStyle,inputWrapper,textInputStyle,isEditable=true}) => {
+const FormField = ({value,labelText="",focusColor="black",textAlignVertical="center",placeholder,keyboardType,rightIcon=null,onRightIconClick=() => {},onChange,containerStyle,inputWrapper,textInputStyle,isEditable=true,multiLine=false}) => {
   const [isFocus,setIsFocus] = useState(false)
   const [isPasswordOpen , setIsPasswordOpen] = useState(false)
   const onPasswordChangeType = () => {
@@ -20,6 +20,8 @@ const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardTy
       <View style={{...style.wrapper,...{borderColor:isFocus ? focusColor : "transparent"},...inputWrapper}}>
        <TextInput style={{...style.input}} 
        editable={isEditable}
+       textAlignVertical={textAlignVertical}
+       multiline={multiLine}
        value={value}
        placeholder={placeholder} 
        placeholderTextColor={"rgba(0, 0, 0,.3)"} 
@@ -29,9 +31,14 @@ const FormField = ({value,labelText="",focusColor="black",placeholder,keyboardTy
        onFocus={e => {setIsFocus(oldState => {return true})}}
        onBlur={e => setIsFocus(oldState => {return false})}      
        />
-        {labelText.toUpperCase() === "PASSWORD" && <TouchableOpacity style={style.passwordIconWrapperStyle} onPress={onPasswordChangeType}>
-        <Image style={style.passwordIconStyle} source={isPasswordOpen ? openEye : closeEye} />
-        </TouchableOpacity> }
+        {(labelText.toUpperCase() === "PASSWORD" && <TouchableOpacity style={style.rightIconWrapperStyle} onPress={onPasswordChangeType}>
+        <Image style={style.rightIconStyle} source={isPasswordOpen ? openEye : closeEye} />
+        </TouchableOpacity> )}
+        {
+          (labelText.toUpperCase() !== "PASSWORD" && rightIcon !== null) &&  <TouchableOpacity style={style.rightIconWrapperStyle} onPress={onRightIconClick}>
+        <Image style={style.rightIconStyle} source={rightIcon} />
+        </TouchableOpacity>
+        } 
       </View> 
     </View>
   )
@@ -55,12 +62,12 @@ const style = StyleSheet.create({
            borderRadius:borderRadius.middleRadius,
            borderWidth:2,
                 },
-       passwordIconWrapperStyle:{
+       rightIconWrapperStyle:{
              position:"absolute",
              right:5,
              top:12.5
        },         
-       passwordIconStyle : {
+       rightIconStyle : {
               width:25,
               height:25,
               tintColor:"rgba(0, 0, 0,.6)",
