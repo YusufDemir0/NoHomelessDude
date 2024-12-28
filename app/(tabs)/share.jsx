@@ -7,10 +7,11 @@ import CustomTouchableButton from '../../components/customButtons/customTouchabl
 import deleteIcon from "../../assets/icons/delete.png";
 import addIcon from "../../assets/icons/add.png";
 import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
 
 const Share = () => {
   const [values, setValues] = useState({
-    adress: '',
+    address: '',  // 'adress' yerine 'address' olarak düzeltildi
     description: '',
     need: '',
     needs: [],
@@ -57,21 +58,6 @@ const Share = () => {
         </View>
 
         {/* Text Input Section */}
-        <FormField
-          labelText="Adress"
-          textInputStyle={styles.formText}
-          inputWrapper={styles.formInput}
-          containerStyle={styles.formContainer}
-          value={values.adress}
-          onChange={(value) =>
-            setValues((oldState) => ({ ...oldState, adress: value }))
-          }
-          placeholder="Adress"
-          focusColor={colors.primary}
-          textAlignVertical="top"
-          multiLine={true}
-        />
-
         <FormField
           labelText="Description"
           textInputStyle={styles.formText}
@@ -125,9 +111,29 @@ const Share = () => {
           textStyle={styles.buttonText}
         />
         {values.location && (
-          <Text style={styles.locationText}>
-            Location: {values.location.coords.latitude}, {values.location.coords.longitude}
-          </Text>
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: values.location.coords.latitude,
+                longitude: values.location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              <Marker
+                coordinate={{
+                  latitude: values.location.coords.latitude,
+                  longitude: values.location.coords.longitude,
+                }}
+                title="Current Location"
+                description={`Latitude: ${values.location.coords.latitude}, Longitude: ${values.location.coords.longitude}`}
+              />
+            </MapView>
+            <Text style={styles.locationText}>
+              Location: {values.location.coords.latitude}, {values.location.coords.longitude}
+            </Text>
+          </View>
         )}
 
         {/* Submit Button */}
@@ -214,6 +220,18 @@ const styles = StyleSheet.create({
     marginTop: spaces.middle,
     color: colors.text,
     fontSize: fonts.smallFontSize,
+  },
+  mapContainer: {
+    width: '100%',
+    height: 250,
+    marginTop: spaces.high,
+    borderRadius: borderRadius.smallRadius,
+    overflow: 'hidden',
+    elevation: shadows.smallShadow,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
   },
 });
 

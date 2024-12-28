@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Text, Platform } from 'react-native';
+import { View, Button, Text, Alert, Platform, NetInfo } from 'react-native';
 import NfcManager, { NfcTech } from 'react-native-nfc-manager';
+import { useIsConnected } from 'react-native-offline'; // Library to detect internet connectivity
 
 const PostWithNfc = () => {
   const [post, setPost] = useState(null);
   const [nfcData, setNfcData] = useState(null);
+  const isConnected = useIsConnected(); // Use hook to check internet connection
 
   useEffect(() => {
-    // NFC Manager'ı başlat
     NfcManager.start();
     NfcManager.setEventListener('stateChange', 'onStateChange', (state) => {
       console.log('NFC Durumu:', state);
     });
 
-    // Cleanup NFC Manager
     return () => {
       NfcManager.stop();
       NfcManager.setEventListener('stateChange', 'off');
     };
   }, []);
 
-  // Postu NFC etiketiyle paylaşmak
   const sharePostWithNfc = () => {
     const newPost = {
       id: 1,
@@ -29,7 +28,7 @@ const PostWithNfc = () => {
       longitude: -122.4194,
     };
     
-    // Burada NFC etiketi üzerine veriyi yazmak
+    // Check if NFC is available
     NfcManager.requestTechnology(NfcTech.NfcA)
       .then(() => {
         NfcManager.writeNfcTag({
@@ -43,15 +42,9 @@ const PostWithNfc = () => {
       .catch((err) => console.error('NFC Yazma Hatası:', err));
   };
 
-  // NFC etiketi okuma
   const readNfcTag = () => {
     NfcManager.requestTechnology(NfcTech.NfcA)
       .then(() => {
-        NfcManager.setEventListener('stateChange', 'onStateChange', (state) => {
-          console.log('NFC Durumu:', state);
-        });
-
-        // NFC tag'ini oku
         NfcManager.readNfcTag().then((tag) => {
           setNfcData(tag);
           console.log('Okunan NFC Tag:', tag);
@@ -61,11 +54,26 @@ const PostWithNfc = () => {
       .catch((err) => console.error('NFC Okuma Hatası:', err));
   };
 
-  // Kaybolan postu paylaşan kişi yakınlarındaki kişilere aktaracak
   const handlePostTransfer = () => {
-    // Burada NFC aracılığıyla post aktarımı yapılacak. 
-    // Paylaşılan postu başka kişilere aktarma için NFC etiketini okutmaya başla.
-    sharePostWithNfc();
+    if (!isConnected) {
+      Alert.alert(
+        'İnternet Bağlantısı Yok',
+        'NFC ile yakındaki cihazlara paylaşmak ister misiniz?',
+        [
+          {
+            text: 'Evet',
+            onPress: () => {
+              sharePostWithNfc();
+            },
+          },
+          { text: 'Hayır', onPress: () => console.log('User chose not to share via NFC') },
+        ]
+      );
+    } else {
+      Alert.alert('İnternet Bağlantısı Var', 'Post NFC ile paylaşılacak!', [
+        { text: 'Tamam', onPress: () => sharePostWithNfc() },
+      ]);
+    }
   };
 
   return (
