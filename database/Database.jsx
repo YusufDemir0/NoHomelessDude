@@ -1,19 +1,40 @@
-import React from "react";
 import * as SQLite from "expo-sqlite";
 
-// Veritabanı bağlantısını açıyoruz
 const db = SQLite.openDatabase("SqliteDb");
 
-// Tabloyu oluşturuyoruz
-const createTable = () => {
+export const createTable = () => {
   db.transaction(
     (tx) => {
       tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT);`,
+        `CREATE TABLE IF NOT EXISTS Users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          name TEXT, 
+          email TEXT, 
+          password TEXT, 
+          foto TEXT
+        );`,
         [],
-        () => console.log("Table created successfully"),
+        () => console.log("Users table created successfully"),
         (tx, error) => {
-          console.log("Error creating table:", error);
+          console.log("Error creating Users table:", error);
+          return false;
+        }
+      );
+
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS Posts (
+          id INTEGER PRIMARY KEY AUTOINCREMENT, 
+          user_id INTEGER, 
+          name TEXT, 
+          aciklama TEXT, 
+          liste TEXT, 
+          konum TEXT,
+          FOREIGN KEY(user_id) REFERENCES Users(id)
+        );`,
+        [],
+        () => console.log("Posts table created or updated successfully"),
+        (tx, error) => {
+          console.log("Error creating or updating Posts table:", error);
           return false;
         }
       );
@@ -24,13 +45,13 @@ const createTable = () => {
   );
 };
 
-// Yeni bir kullanıcı ekliyoruz
-const addUser = (name, email, password) => {
+// Kullanıcı ekliyoruz
+export const addUser = (name, email, password, foto) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
-        `INSERT INTO Users (name, email, password) VALUES (?, ?, ?);`,
-        [name, email, password],
+        `INSERT INTO Users (name, email, password, foto) VALUES (?, ?, ?, ?);`,
+        [name, email, password, foto],
         () => console.log("User added successfully"),
         (tx, error) => {
           console.log("Error adding user:", error);
@@ -44,8 +65,7 @@ const addUser = (name, email, password) => {
   );
 };
 
-// Kullanıcıyı email ve şifre ile kontrol ediyoruz
-const getUser = (email, password, callback) => {
+export const getUser = (email, password, callback) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
@@ -53,51 +73,67 @@ const getUser = (email, password, callback) => {
         [email, password],
         (tx, results) => {
           if (results.rows.length > 0) {
-            callback(results.rows._array); // Kullanıcı bulunduysa callback fonksiyonunu çağırıyoruz
+            callback(results.rows._array);
           } else {
             console.log("User not found");
-            callback([]); // Kullanıcı bulunamazsa boş array döndürüyoruz
+            callback([]);
           }
         },
         (tx, error) => {
           console.log("Error fetching user:", error);
-          callback([]); // Hata durumunda da boş array döndürüyoruz
+          callback([]);
         }
       );
     },
     (error) => {
       console.log("Transaction error:", error);
-      callback([]); // Hata durumunda da boş array döndürüyoruz
+      callback([]);
     }
   );
 };
 
-// React bileşeni oluşturuyoruz
-const App = () => {
-  React.useEffect(() => {
-    createTable(); // Bileşen ilk yüklendiğinde tabloyu oluştur
-  }, []);
-
-  const handleAddUser = () => {
-    addUser("John Doe", "john@example.com", "password123");
-  };
-
-  const handleGetUser = () => {
-    getUser("john@example.com", "password123", (users) => {
-      if (users.length > 0) {
-        console.log("User found:", users);
-      } else {
-        console.log("No user found.");
-      }
-    });
-  };
-
-  return (
-    <div>
-      <button onClick={handleAddUser}>Add User</button>
-      <button onClick={handleGetUser}>Get User</button>
-    </div>
+export const addPost = (user_id, name, aciklama, liste, konum) => {
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        `INSERT INTO Posts (user_id, name, aciklama, liste, konum) VALUES (?, ?, ?, ?, ?);`,
+        [user_id, name, aciklama, liste, konum],
+        () => console.log("Post added successfully"),
+        (tx, error) => {
+          console.log("Error adding post:", error);
+          return false;
+        }
+      );
+    },
+    (error) => {
+      console.log("Transaction error:", error);
+    }
   );
 };
 
-export default App;
+export const getPosts = (callback) => {
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        `SELECT * FROM Posts;`,
+        [],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            callback(results.rows._array);
+          } else {
+            console.log("No posts found");
+            callback([]);
+          }
+        },
+        (tx, error) => {
+          console.log("Error fetching posts:", error);
+          callback([]);
+        }
+      );
+    },
+    (error) => {
+      console.log("Transaction error:", error);
+      callback([]);
+    }
+  );
+};
