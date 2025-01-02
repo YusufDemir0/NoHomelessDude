@@ -34,11 +34,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // Role kavramı olmadığı için authorities'i boş set olarak tutuyoruz
         return UserPrincipal.builder()
-                .user(user)
                 .id(user.getId())
-                .username(user.getMail())             // getUsername() -> mail
-                .password(user.getPassword())
-                .authorities(Collections.emptySet())   // Rol yok, boş set
+                .mail(user.getMail())          // login kimliği
+                .password(user.getPassword())  // hashed parola
+                .username(user.getUsername())  // görünen ad
+                .authorities(Collections.emptySet())
                 .build();
     }
 }

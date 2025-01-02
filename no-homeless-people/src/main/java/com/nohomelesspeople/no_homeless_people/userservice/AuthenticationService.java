@@ -51,7 +51,11 @@ public class AuthenticationService implements IAuthenticationService {
             String token = jwtProvider.generateToken(userPrincipal);
 
             // 5. Yanıt olarak LoginResponse döndür
-            return new LoginResponse(token, userPrincipal.getUsername(), "Login successful");
+            return new LoginResponse(
+                    token,
+                    userPrincipal.getUsername(),
+                    userPrincipal.getMail(),
+                    "Login successful");
         }
         catch (Exception ex) {
             // Kimlik doğrulama başarısız ise

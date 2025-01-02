@@ -51,7 +51,9 @@ public class JwtProvider implements IJwtProvider {
         System.out.println(auth.getUsername());
         try {
             return Jwts.builder()
-                    .setSubject(auth.getUsername())
+                    .setSubject(auth.getMail())
+                    .claim("userId", auth.getId())
+                    .claim("displayName", auth.getUsername())
                     .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
                     .signWith(key, SignatureAlgorithm.HS512)
                     .compact();

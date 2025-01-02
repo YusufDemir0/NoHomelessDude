@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,5 +59,24 @@ public class AuthenticationController {
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
+    }
+
+    /**
+     * Kullanıcı çıkışı (logout).
+     * Sunucuda session tutulmadığı için sadece 200 OK döner,
+     * front-end token'ı siler.
+     */
+    @PostMapping("/logout/{mail}")
+    public ResponseEntity<String> logout(@PathVariable String mail,
+                                         Authentication authentication) {
+        // İsteğe bağlı güvenlik: JWT'den alınan mail ile path param mail aynı mı kontrol edebilirsiniz.
+        String loggedInMail = authentication.getName(); // eğer JWT subject mail ise
+        if (!loggedInMail.equals(mail)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("You cannot logout another user");
+        }
+
+        // Sunucuda token saklanmıyor, bu nedenle ek işlem yok
+        return ResponseEntity.ok("Logout successful. Token invalidated on client side.");
     }
 }
