@@ -1,13 +1,13 @@
 
 import {StyleSheet, FlatList} from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PostCard from '../../components/customCards/postCard'
 import { colors, spaces } from '../../constands/appConstand'
 import FlatHeaderComp from '../../components/pageComponents/home/homeFlatHeaderComp'
 import FlatEmptyComp from '../../components/pageComponents/home/homeFlatEmptyComp'
 import emptyData from "../../assets/images/emptyData.png"
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import appIcon from "../../assets/images/appImage.png"
 import { UserContext } from '../../managments/userManagment'
 import PostCard2 from '../../components/customCards/postCard2'
@@ -16,7 +16,7 @@ import PostCard2 from '../../components/customCards/postCard2'
 const Home = () => {
   const {userState} = useContext(UserContext)
   const [postsState,setPostsState] = useState({posts:[]})
-  
+  console.log("home posts : ",postsState.posts)
   const onSearch = (query) => {
        router.push(`/search/${query}`)
   }
@@ -44,9 +44,11 @@ const Home = () => {
 
   }
 
-  useEffect(()=> {
-            getPosts()
+  useFocusEffect(useCallback(()=> {
+           getPosts()
   },[])
+  )
+
 
   return (
     <SafeAreaView  style={styles.safeArea}>

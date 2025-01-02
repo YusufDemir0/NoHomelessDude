@@ -6,6 +6,7 @@ import userAvatar from "../../../assets/images/userAvatar1.png"
 import logout from "../../../assets/icons/logout.png"
 
 const FlatProfileHeader = ({title="Profile",subTitle="",avatarSource,postCount,onPress}) => {
+  console.log("profile avatarSource : ",avatarSource)
   return (
    <View style= {styles.container}>
     <View style={styles.topSectionWrapper}>
@@ -18,15 +19,15 @@ const FlatProfileHeader = ({title="Profile",subTitle="",avatarSource,postCount,o
      
     </View>
     <View style={styles.detailWrapper}>
-        <Image style={styles.detailAvatar} source={userAvatar} /> 
-        <Text style={styles.detailSubText}>Egemen</Text> 
+        <Image style={styles.detailAvatar} source={(avatarSource === null || avatarSource === "") ? userAvatar : avatarSource} /> 
+        <Text style={styles.detailSubText}>{subTitle}</Text> 
         <View style={styles.detailTextsWrapper}>
                 <View style={styles.detailTextContainer}>
-                    <Text style={styles.detailUpText}>10</Text>
+                    <Text style={styles.detailUpText}>{postCount}</Text>
                     <Text style={styles.detailDownText}>Posts</Text>
                 </View>
                 <View style={styles.detailTextContainer}>
-                   <Text style={styles.detailUpText}>10 Month</Text>
+                   <Text style={styles.detailUpText}>1 Month</Text>
                    <Text style={styles.detailDownText} >Account Date</Text>
                 </View>
         </View>

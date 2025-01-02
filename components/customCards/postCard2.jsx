@@ -6,13 +6,25 @@ import PostCardOpanableSection from './postCardOpenableSection';
 import MapView, { Marker } from 'react-native-maps';
 
 const PostCard2 = ({
-  post: { address,location,description, creator={username:"",photo:null}, needs, updateDate },
-  bottomButtonIcon = null,
-  bottomButtonClick = () => {},
+  post: {location,description, creator={username:"",photo:null}, needs, createTime,id , 
   translate = () => {}
-}) => {
+},bottomButtonIcon=null,
+bottomButtonClick = (id) => {}}) => {
+     console.log("deleteICON : ",bottomButtonIcon)
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  const calculateHourDifference = (inputDate) => {
+    const now = new Date();
+  
+    const parsedDate = new Date(inputDate);
+  
+    const timeDifferenceMs = now - parsedDate;
+  
+    const hourDifference = timeDifferenceMs / (1000 * 60 * 60);
+  
+    return `${hourDifference.toFixed(1)} h`;
+  };
 
   // Konum tıklanırsa yönlendirme
   const handleLocationPress = (latitude, longitude) => {
@@ -45,17 +57,9 @@ const PostCard2 = ({
             {creator?.username || "Unknown User"}
           </Text>
         </View>
-        <Text style={styles.cardHeaderTimeTextStyle}>1h</Text>
+        <Text style={styles.cardHeaderTimeTextStyle}>{calculateHourDifference(createTime)}</Text>
       </View>
 
-      {/* Diğer bilgileri göster */}
-      <PostCardOpanableSection
-        title={"Adress"}
-        data={[address]}
-        activeHeight={80}
-        sectionItemHeight={60}
-        wrapperStyle={{ marginBottom: spaces.middle }}
-      />
       <PostCardOpanableSection
         title={"Description"}
         data={[description]}
@@ -111,13 +115,7 @@ const PostCard2 = ({
         </TouchableOpacity>
       </View>
 
-      {bottomButtonIcon !== null && (
-        <View style={styles.bottomWrapper}>
-          <TouchableOpacity style={styles.bottomButton} onPress={bottomButtonClick}>
-            <Image style={styles.bottomButtonIcon} source={bottomButtonIcon} />
-          </TouchableOpacity>
-        </View>
-      )}
+      
 
       {/* Dil seçimi için modal */}
       <Modal
@@ -159,6 +157,13 @@ const PostCard2 = ({
           </View>
         </View>
       </Modal>
+      {bottomButtonIcon !== null && (
+        <View style={styles.bottomWrapper}>
+          <TouchableOpacity style={styles.bottomButton} onPress={() => bottomButtonClick(id)}>
+            <Image style={styles.bottomButtonIcon} source={bottomButtonIcon} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
