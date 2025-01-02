@@ -5,7 +5,7 @@ import downArrow from "../../assets/icons/downArrow.png"
 import { borderRadius, colors, fonts, shadows, spaces } from '../../constands/appConstand'
 
 
-const PostCardOpanableSection = ({title,data=[],activeHeight,sectionItemHeight=40,wrapperStyle}) => {
+const PostCardOpanableSection = ({title,data=[],activeHeight,sectionItemHeight=40,wrapperStyle,children=null}) => {
   const [isOpen,setIsOpen] = useState({isOpen:false})
   const onClick = () => {
        setIsOpen(oldState => {
@@ -22,10 +22,10 @@ const PostCardOpanableSection = ({title,data=[],activeHeight,sectionItemHeight=4
             </TouchableOpacity>   
             <Text numberOfLines={1} style={[styles.staticSectionTextStyle]}>{title}</Text>              
         </View>
-        <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false} style={{height:activeHeight,marginTop:25}} >
-          {data.map((value,index) => {
+       <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false} style={{height:activeHeight,marginTop:25}} >
+          {children === null ? data.map((value,index) => {
                return  <Text numberOfLines={2} style={[styles.scrollItemStyle,{height:sectionItemHeight}]} key={index} >{value}</Text>
-          })}  
+          }) : children}  
         </ScrollView>
     </View>
   )

@@ -40,15 +40,14 @@ export default function App() {
 
 const styles = StyleSheet.create({
     safeArea :  {
-       minHeight:"100%",
+       height:"100%",
+       backgroundColor:`${colors.background}`
                 },
     scrollVw :  {
-       height : "100%",
-       backgroundColor:`${colors.background}`  
+         
                 },            
     container : {
        width:"100%",
-       height:"100%",
        alignItems:"center",
        paddingHorizontal:spaces.middle,
        paddingVertical:spaces.high,

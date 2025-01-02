@@ -18,6 +18,7 @@ const FlatHeaderComp = ({placeholder,onSearch,initialValue,title,subtitle,rightI
 
 const styles = StyleSheet.create({
     flatHeaderCompWrapperStyle : {
+        
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems:"center",

@@ -1,6 +1,6 @@
 
 import {StyleSheet, FlatList} from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PostCard from '../../components/customCards/postCard'
 import { colors, spaces } from '../../constands/appConstand'
@@ -10,15 +10,43 @@ import emptyData from "../../assets/images/emptyData.png"
 import { router } from 'expo-router'
 import appIcon from "../../assets/images/appImage.png"
 import { UserContext } from '../../managments/userManagment'
+import PostCard2 from '../../components/customCards/postCard2'
 
 
 const Home = () => {
   const {userState} = useContext(UserContext)
-  const DUMMY_DATA = [{id : 1 , needs : ["a","b","c"],description:"some one needs in there !!!",adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id : 2,description:"some one needs in there !!!", needs : ["a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"},{id:3,description:"some one needs in there !!!", needs : ["a","b","c","a","b","c","a","b","c"],adress:"yesil mah , 644 sok , ayazken koop , c blok",creater:{userName:"Egemen"},updateDate:"00/00/0000"}]   
+  const [postsState,setPostsState] = useState({posts:[]})
   
   const onSearch = (query) => {
-       router.replace(`/search/${query}`)
+       router.push(`/search/${query}`)
   }
+ 
+  const getPosts = async () => {
+    
+      await fetch(`${process.env.BASE_URL}posts`,{
+          method:"GET",
+          headers:{
+              "Content-Type":"application/json",
+              "Authorization":`Bearer ${userState.token}`
+          }
+      })
+      .then(res => {
+          return res.json()
+      })
+      .then(data => {
+          setPostsState(oldState => {
+              return {posts:data}
+          })
+      })
+      .catch(err => {
+          console.log("err : ",err)
+      })
+
+  }
+
+  useEffect(()=> {
+            getPosts()
+  },[])
 
   return (
     <SafeAreaView  style={styles.safeArea}>
@@ -26,12 +54,12 @@ const Home = () => {
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
               style={styles.flatListStyle} 
-              data={DUMMY_DATA}
+              data={postsState.posts}
               keyExtractor={(item) => {
                     return item.id;
               }}   
               renderItem={({item}) => {
-                    return <PostCard post={item}  />
+                    return <PostCard2 post={item}  />
               }}
               ListHeaderComponent={<FlatHeaderComp onSearch={onSearch} placeholder={"Search User"} subtitle={userState.username} title={"WELCOME BACK"} rightIcon={appIcon} />}
               ListEmptyComponent={<FlatEmptyComp  description={"Post not found. Try Again Later"} imgSource={emptyData} />}
