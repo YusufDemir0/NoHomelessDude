@@ -1,18 +1,40 @@
 
 import { View, Text, ScrollView, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomTouchableButton from '../../components/customButtons/customTouchableButton'
 import FormField from '../../components/customForm/formField'
 import { Link,router } from 'expo-router'
 import {colors,fonts,spaces,shadows,borderRadius} from "../../constands/appConstand"
+import { UserContext } from '../../managments/userManagment'
 
 const Login = () => {
  
-const [formState , setFormState ] = useState({email:"",password:""});
+const {setUserState} = useContext(UserContext)    
+const [formState , setFormState ] = useState({mail:"",password:""});
+    
+ const onSubmit = async () => {
+      const jsonFormData = JSON.stringify({mail:formState.mail,password:formState.password})
+      await fetch(`${process.env.BASE_URL}auth/login`,{
+              method:"POST",
+              body:jsonFormData,
+              headers:{
+                  "Content-Type":"application/json"
+              }
+      })
+          .then(res => {
+               return res.json()
+          })
+          .then(data => {
+               setUserState(oldState => {
+                   return {mail:data.mail,username:data.username,token:data.token,password:formState.password};
+               })
+               router.replace("/home")
+          })
+          .catch(err => {
+              console.log("err : ",err)
+          })
 
- const onSubmit = () => {
-       router.replace("/home")
  } 
 
   return (
@@ -21,8 +43,8 @@ const [formState , setFormState ] = useState({email:"",password:""});
                 <View style={styles.content}>
                       <Text style={styles.header}>Welcome Back</Text>
                       <Text style={styles.subTitle}>Sign in to access your account.</Text>
-                      <FormField value={formState.email} labelText='E-mail' keyboardType="email-address" placeholder={"E-mail"} onChange={value => {setFormState(oldState => {
-                         return {...oldState,email:value}
+                      <FormField value={formState.mail} labelText='E-mail' keyboardType="email-address" placeholder={"E-mail"} onChange={value => {setFormState(oldState => {
+                         return {...oldState,mail:value}
                       })}} focusColor={colors.primary} containerStyle={styles.formContainerStyle} textInputStyle={styles.formLabelStyle} />
                       <FormField value={formState.password} labelText='Password' keyboardType="numeric" placeholder={"Password"} onChange={value => {setFormState(oldState => {
                          return {...oldState,password:value}

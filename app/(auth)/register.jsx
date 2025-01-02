@@ -5,14 +5,31 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CustomTouchableButton from '../../components/customButtons/customTouchableButton'
 import FormField from '../../components/customForm/formField'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import {colors,fonts,spaces,} from "../../constands/appConstand"
 
 const Register = () => {
  
-const [formState , setFormState ] = useState({userName:"",email:"",password:""});
-
- const onSubmit = () => {
+const [formState , setFormState ] = useState({username:"",mail:"",password:""});
+    
+ const onSubmit = async () => {
+      const jsonFormData = JSON.stringify({username:formState.username,mail:formState.mail,password:formState.password,photo:null})
+      await fetch(`${process.env.BASE_URL}auth/register`,{
+              method:"POST",
+              body:jsonFormData,
+              headers:{
+                  "Content-Type":"application/json"
+              }
+      })
+          .then(res => {
+               return res.json()
+          })
+          .then(data => {
+               router.replace("/login")
+          })
+          .catch(err => {
+              console.log("err : ",err)
+          })
 
  } 
 
@@ -22,11 +39,11 @@ const [formState , setFormState ] = useState({userName:"",email:"",password:""})
                 <View style={styles.content}>
                       <Text style={styles.header}>Join Us</Text>
                       <Text style={styles.subTitle}>Create an account to get started.</Text>
-                      <FormField labelText='UserName' placeholder={"UserName"} onChange={value => {setFormState(oldState => {
-                         return {...oldState,userName:value}
+                      <FormField labelText='UserName' value={formState.username} placeholder={"UserName"} onChange={value => {setFormState(oldState => {
+                         return {...oldState,username:value}
                       })}} focusColor={colors.primary} containerStyle={styles.formContainerStyle} textInputStyle={styles.formLabelStyle} />
-                     <FormField value={formState.email} labelText='E-mail' keyboardType="email-address" placeholder={"E-mail"} onChange={value => {setFormState(oldState => {
-                         return {...oldState,email:value}
+                     <FormField value={formState.mail} labelText='E-mail' keyboardType="email-address" placeholder={"E-mail"} onChange={value => {setFormState(oldState => {
+                         return {...oldState,mail:value}
                       })}} focusColor={colors.primary} containerStyle={styles.formContainerStyle} textInputStyle={styles.formLabelStyle} />
                       <FormField value={formState.password} labelText='Password' keyboardType="numeric" placeholder={"Password"} onChange={value => {setFormState(oldState => {
                          return {...oldState,password:value}

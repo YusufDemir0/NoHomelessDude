@@ -9,7 +9,7 @@ import goal from "../assets/icons/goal.png"
 export default function App() {
 
   const onPress = () => {
-      router.push("/login")
+      router.replace("/login")
   }
 
   return (
