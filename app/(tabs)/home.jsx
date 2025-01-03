@@ -2,7 +2,6 @@
 import {StyleSheet, FlatList} from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import PostCard from '../../components/customCards/postCard'
 import { colors, spaces } from '../../constands/appConstand'
 import FlatHeaderComp from '../../components/pageComponents/home/homeFlatHeaderComp'
 import FlatEmptyComp from '../../components/pageComponents/home/homeFlatEmptyComp'

@@ -1,52 +1,122 @@
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Alert } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { borderRadius, colors, fonts, shadows, spaces } from '../../constands/appConstand';
 import FormField from '../../components/customForm/formField';
 import CustomTouchableButton from '../../components/customButtons/customTouchableButton';
 import camIcon from "../../assets/icons/cam.png";
-import userAvatar from "../../assets/images/userAvatar1.png"; // Default avatar image
-import * as ImagePicker from 'expo-image-picker'; // Expo Image Picker import
+import avatar from "../../assets/images/defaultAvatar.png"; 
+import * as ImagePicker from 'expo-image-picker'; 
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'; 
 import { UserContext } from '../../managments/userManagment';
+import { useFocusEffect } from 'expo-router';
 
 const Setting = () => {
-  const {userState,setUserState} = useContext(UserContext)
-  const [userData,setUserData] = useState({photo:userState.photo,username:userState.username,mail:userState.mail,password:userState.password})
-  const [modalVisible, setModalVisible] = useState(false); // Modal visibility for options
+  const { userState, setUserState } = useContext(UserContext);
+  const [userData, setUserData] = useState({
+    photo: userState.photo,
+    username: userState.username,
+    mail: userState.mail,
+    password: userState.password,
+  });
 
-  // Fotoğraf değiştirme işlevi
+  useFocusEffect(useCallback(()=> {
+              setUserData(oldState => {
+                   return {
+                    photo: userState.photo,
+                    username: userState.username,
+                    mail: userState.mail,
+                    password: userState.password,
+                  }
+              })
+  },[]))
+
+  const [modalVisible, setModalVisible] = useState(false); 
+
+  const compressAndConvertToBase64 = async (uri) => {
+    try {
+      const manipulatedImage = await manipulateAsync(
+        uri,
+        [{ resize: { width: 200 } }],
+        { compress: 0.7, format: SaveFormat.JPEG } 
+      );
+
+      const response = await fetch(manipulatedImage.uri);
+      const blob = await response.blob();
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Image compression failed:', error);
+      return null;
+    }
+  };
+
   const imgPickerClick = async () => {
-    setModalVisible(true); // Widget açılacak
+    setModalVisible(false);
 
-    // Galeriye fotoğraf seçme iznini al
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
+    if (!permissionResult.granted) {
       alert('Permission to access the camera roll is required!');
       return;
     }
 
-    // Fotoğraf seçme işlemi
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.CameraType.Images, // Medya tipi olarak sadece resim seçiyoruz
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
 
-    // Eğer kullanıcı fotoğraf seçerse, avatar'ı güncelle
     if (!result.canceled) {
-      setValues((oldState) => ({ ...oldState, avatar: { uri: result.assets[0].uri } }));
+      const base64Photo = await compressAndConvertToBase64(result.assets[0].uri);
+      if (base64Photo) {
+        console.log("new base64 : ",base64Photo)
+        setUserData((oldState) => ({ ...oldState, photo: base64Photo }));
+      }
     }
-
-    setModalVisible(false); // Widget kapatılır
   };
 
-  // Fotoğrafı silme işlemi
   const onDeleteAvatar = () => {
-    setValues((oldState) => ({ ...oldState, avatar: userAvatar }));
-    setModalVisible(false); // Widget kapatılır
+    setUserData((oldState) => ({ ...oldState, photo: "" }));
+    setModalVisible(false);
   };
 
-  const onSave = () => {
-    console.log('Saving data...', values);
+  const getImageSource = (base64String) => {
+    return base64String ? { uri: `data:image/jpeg;base64,${base64String}` } : avatar;
+  };
+
+  const onSave =  () => {
+    let jsonFormData = "" ;
+    if(userData.photo === null)
+    {
+       jsonFormData = JSON.stringify({username:userData.username,password:userData.password})  
+    }
+       jsonFormData = JSON.stringify({username:userData.username,password:userData.password,photo:userData.photo}) 
+       console.log("jsonFormData : ",jsonFormData) 
+       console.log("user token : ",userState.token) 
+       console.log("url  : ",`${process.env.BASE_URL}users/${userState.mail}`) 
+    fetch(`${process.env.BASE_URL}users/${userState.mail}`,{
+        method:"PUT",
+        body:jsonFormData,
+        headers:{
+           "Content-Type":"application/json",
+           "Authorization":`Bearer ${userState.token}`
+        }
+    }) 
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+         console.log("setting data : ",data)
+         setUserState(oldState => {
+             return {...oldState , username:userData.username,photo:userData.photo,password:userData.password}
+         })
+    })
+    .catch(err => {
+        console.log("err : ",err)
+    })
   };
 
   return (
@@ -58,7 +128,10 @@ const Setting = () => {
 
         {/* Avatar Seçimi */}
         <TouchableOpacity style={styles.avatarWrapper} onPress={() => setModalVisible(true)}>
-          <Image style={styles.avatarImg} source={(userData.photo === null || userData.photo === "") ? userAvatar : userData.photo } />
+          <Image
+            style={styles.avatarImg}
+            source={getImageSource(userData.photo)}
+          />
           <Image style={styles.avatarIcon} source={camIcon} />
         </TouchableOpacity>
 
@@ -121,7 +194,12 @@ const Setting = () => {
           focusColor={colors.primary}
         />
 
-        <CustomTouchableButton onPress={onSave} text={"Save"} buttonStyle={styles.buttonContainer} textStyle={styles.buttonText} />
+        <CustomTouchableButton
+          onPress={onSave}
+          text={"Save"}
+          buttonStyle={styles.buttonContainer}
+          textStyle={styles.buttonText}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -160,7 +238,7 @@ const styles = StyleSheet.create({
   avatarImg: {
     width: 100,
     height: 100,
-    resizeMode: "contain",
+    resizeMode: "cover",
     borderStyle: "dotted",
     borderWidth: 1,
     borderColor: colors.text,

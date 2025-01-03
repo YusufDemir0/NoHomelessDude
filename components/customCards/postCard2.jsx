@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, Linking} from 'react-native';
 import { borderRadius, colors, fonts, shadows, spaces } from '../../constands/appConstand';
-import userAvatar from "../../assets/images/userAvatar1.png";
+import avatar from "../../assets/images/defaultAvatar.png";
 import PostCardOpanableSection from './postCardOpenableSection';
 import MapView, { Marker } from 'react-native-maps';
+import { UserContext } from '../../managments/userManagment';
 
 const PostCard2 = ({
-  post: {location,description, creator={username:"",photo:null}, needs, createTime,id , 
-  translate = () => {}
+  post: {location,description, creator={username:"",photo:null}, needs, createTime,id
 },bottomButtonIcon=null,
 bottomButtonClick = (id) => {}}) => {
-     console.log("deleteICON : ",bottomButtonIcon)
+  const {userState} = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [dynamicDesc,setDynamicDesc] = useState({desc:description})
+  
+    let imageSource ;
+    if(avatar === null || avatar === "")
+    {
+        imageSource = avatar
+    }
+    else{
+         imageSource = { uri: `data:image/jpeg;base64,${creator.photo}` }
+    }
 
   const calculateHourDifference = (inputDate) => {
     const now = new Date();
@@ -26,13 +35,11 @@ bottomButtonClick = (id) => {}}) => {
     return `${hourDifference.toFixed(1)} h`;
   };
 
-  // Konum tıklanırsa yönlendirme
   const handleLocationPress = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude},${longitude}`;
     Linking.openURL(url)
   };
 
-  // Konum adresini kontrol et ve latitude, longitude ayır
   const parseLocation = (location) => {
     const coordinates = location.split(',');
     if (coordinates.length === 2) {
@@ -42,17 +49,42 @@ bottomButtonClick = (id) => {}}) => {
         return { latitude, longitude };
       }
     }
-    return null; // Geçerli bir konum değilse null döner
+    return null; 
   };
 
-  // Konumu parse et
+  const translateFetch = (language) => {
+         const jsonTranslateData = JSON.stringify({text:dynamicDesc.desc,targetLanguage:language})
+         console.log("jsonTranslateData : ",jsonTranslateData)
+         fetch(`${process.env.BASE_URL}translate`,{
+             method:"POST",
+             body:jsonTranslateData,
+             headers:{
+                 "Content-Type":"application/json",
+                 "Authorization":`Bearer ${userState.token}`
+             }
+         })
+         .then(res => {
+             return res.text()
+         })
+         .then(data => {
+            console.log("translate data : ",data)
+              setDynamicDesc(oldState => {
+                  return {desc:data}
+              })
+              setModalVisible(false)
+         })
+         .catch(err => {
+            console.log("err : ",err)
+         })
+  }
+ 
   const lastParseLocation = parseLocation(location);
 
   return (
     <View style={styles.cardWrapper}>
       <View style={styles.cardHeader}>
         <View style={styles.headerDetailViewSyle}>
-          <Image style={styles.cardHeaderAvatarStyle} source={(creator.photo === null || creator.photo === "") ? userAvatar : creator.photo} />
+          <Image style={styles.cardHeaderAvatarStyle} source={imageSource} />
           <Text numberOfLines={1} style={styles.cardHeaderTextStyle}>
             {creator?.username || "Unknown User"}
           </Text>
@@ -62,7 +94,7 @@ bottomButtonClick = (id) => {}}) => {
 
       <PostCardOpanableSection
         title={"Description"}
-        data={[description]}
+        data={[dynamicDesc.desc]}
         activeHeight={80}
         sectionItemHeight={60}
         wrapperStyle={{ marginBottom: spaces.middle }}
@@ -74,7 +106,7 @@ bottomButtonClick = (id) => {}}) => {
         wrapperStyle={{ marginBottom: spaces.middle }}
       />
 
-      {/* Harita openable section */}
+    
       <PostCardOpanableSection
         title={"Location"}
         data={[]}
@@ -105,7 +137,7 @@ bottomButtonClick = (id) => {}}) => {
           )}
         </PostCardOpanableSection>
 
-      {/* Translate butonu */}
+    
       <View style={styles.bottomWrapper}>
         <TouchableOpacity
           style={styles.bottomButton}
@@ -115,9 +147,6 @@ bottomButtonClick = (id) => {}}) => {
         </TouchableOpacity>
       </View>
 
-      
-
-      {/* Dil seçimi için modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -130,8 +159,7 @@ bottomButtonClick = (id) => {}}) => {
             <TouchableOpacity
               style={styles.languageButton}
               onPress={() => {
-                setSelectedLanguage("English");
-                setModalVisible(false);
+                translateFetch("en")
               }}
             >
               <Text style={styles.languageText}>English</Text>
@@ -139,8 +167,15 @@ bottomButtonClick = (id) => {}}) => {
             <TouchableOpacity
               style={styles.languageButton}
               onPress={() => {
-                setSelectedLanguage("Russian");
-                setModalVisible(false);
+                translateFetch("tr")
+              }}
+            >
+              <Text style={styles.languageText}>Turkish</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.languageButton}
+              onPress={() => {
+                translateFetch("ru")
               }}
             >
               <Text style={styles.languageText}>Russian</Text>
@@ -148,8 +183,7 @@ bottomButtonClick = (id) => {}}) => {
             <TouchableOpacity
               style={styles.languageButton}
               onPress={() => {
-                setSelectedLanguage("Japanese");
-                setModalVisible(false);
+                translateFetch("ja")
               }}
             >
               <Text style={styles.languageText}>Japanese</Text>
@@ -159,7 +193,9 @@ bottomButtonClick = (id) => {}}) => {
       </Modal>
       {bottomButtonIcon !== null && (
         <View style={styles.bottomWrapper}>
-          <TouchableOpacity style={styles.bottomButton} onPress={() => bottomButtonClick(id)}>
+          <TouchableOpacity style={styles.bottomButton} onPress={() =>{
+             console.log("post id : ",id)
+             bottomButtonClick(id)}}>
             <Image style={styles.bottomButtonIcon} source={bottomButtonIcon} />
           </TouchableOpacity>
         </View>

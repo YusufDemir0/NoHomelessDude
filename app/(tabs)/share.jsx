@@ -9,7 +9,7 @@ import addIcon from "../../assets/icons/add.png";
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import MapView, { Marker } from 'react-native-maps';
-import NetInfo from '@react-native-community/netinfo';  // NetInfo'yu import ediyoruz
+import NetInfo from '@react-native-community/netinfo';  
 import { UserContext } from '../../managments/userManagment';
 
 const Share = () => {
@@ -22,7 +22,7 @@ const Share = () => {
     location: null,
   });
 
-  const router = useRouter(); // router'ı initialize ediyoruz
+  const router = useRouter(); 
 
   const onNeedsAdd = () => {
     if (values.need !== '') {
@@ -56,7 +56,6 @@ const Share = () => {
   const onSend = async () => {
     console.log('Sending post with data:', values);
 
-    // İnternet bağlantısı kontrolü yapılır
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
         const jsonShareData = JSON.stringify({creator:{username:userState.username,photo:userState.photo},needs:values.needs,description:values.description,location:`${values.location.coords.latitude},${values.location.coords.longitude}`,address:""})
@@ -81,7 +80,6 @@ const Share = () => {
              console.log("err : ",err)
          })
       } else {
-        // İnternet yoksa NFC ekranına yönlendirme yapılır
         Alert.alert('İnternet Bağlantısı Yok', 'NFC ekranına yönlendiriliyorsunuz.');
         router.push('/(connectivity)/nfc');
       }
@@ -95,7 +93,7 @@ const Share = () => {
           <Text style={styles.headerText}>Share Post</Text>
         </View>
 
-        {/* Text Input Section */}
+       
         <FormField
           labelText="Description"
           textInputStyle={styles.formText}
@@ -111,7 +109,7 @@ const Share = () => {
           multiLine={true}
         />
 
-        {/* Form Section */}
+        
         <FormField
           labelText="Needs"
           textInputStyle={styles.formText}
@@ -141,7 +139,7 @@ const Share = () => {
           ))}
         </ScrollView>
 
-        {/* Location Section */}
+       
         <CustomTouchableButton
           onPress={getLocation}
           text="Get Location"
@@ -174,10 +172,10 @@ const Share = () => {
           </View>
         )}
 
-        {/* Submit Button */}
+       
         <CustomTouchableButton
           onPress={onSend}
-          text="Shate"
+          text="Share"
           buttonStyle={styles.buttonContainer}
           textStyle={styles.buttonText}
         />

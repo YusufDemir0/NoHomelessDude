@@ -13,7 +13,7 @@ const Register = () => {
 const [formState , setFormState ] = useState({username:"",mail:"",password:""});
     
  const onSubmit = async () => {
-      const jsonFormData = JSON.stringify({username:formState.username,mail:formState.mail,password:formState.password,photo:null})
+      const jsonFormData = JSON.stringify({username:formState.username,mail:formState.mail,password:formState.password,photo:""})
       await fetch(`${process.env.BASE_URL}auth/register`,{
               method:"POST",
               body:jsonFormData,

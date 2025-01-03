@@ -27,7 +27,7 @@ const [formState , setFormState ] = useState({mail:"",password:""});
           })
           .then(data => {
                setUserState(oldState => {
-                   return {mail:data.mail,username:data.username,token:data.token,password:formState.password};
+                   return {photo:data.photo,mail:data.mail,username:data.username,token:data.token,password:formState.password};
                })
                router.replace("/home")
           })

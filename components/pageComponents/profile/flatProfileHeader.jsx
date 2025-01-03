@@ -1,12 +1,20 @@
 
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { colors, fonts, shadows, spaces } from '../../../constands/appConstand'
-import userAvatar from "../../../assets/images/userAvatar1.png"
+import { borderRadius, colors, fonts, shadows, spaces } from '../../../constands/appConstand'
+import avatar from "../../../assets/images/defaultAvatar.png"
 import logout from "../../../assets/icons/logout.png"
 
 const FlatProfileHeader = ({title="Profile",subTitle="",avatarSource,postCount,onPress}) => {
   console.log("profile avatarSource : ",avatarSource)
+  let imageSource ;
+  if(avatarSource === null || avatarSource === "")
+  {
+      imageSource = avatar
+  }
+  else{
+       imageSource = { uri: `data:image/jpeg;base64,${avatarSource}` }
+  }
   return (
    <View style= {styles.container}>
     <View style={styles.topSectionWrapper}>
@@ -19,7 +27,7 @@ const FlatProfileHeader = ({title="Profile",subTitle="",avatarSource,postCount,o
      
     </View>
     <View style={styles.detailWrapper}>
-        <Image style={styles.detailAvatar} source={(avatarSource === null || avatarSource === "") ? userAvatar : avatarSource} /> 
+        <Image style={styles.detailAvatar} source={imageSource} /> 
         <Text style={styles.detailSubText}>{subTitle}</Text> 
         <View style={styles.detailTextsWrapper}>
                 <View style={styles.detailTextContainer}>
@@ -66,7 +74,7 @@ const styles = StyleSheet.create({
      },
 
      detailAvatar : {
-        width:80,height:80,marginBottom:spaces.small,resizeMode:"cover"
+        width:80,height:80,borderRadius:borderRadius.circleRadius(80),marginBottom:spaces.small,resizeMode:"cover"
      },
      detailSubText : {
           marginBottom:spaces.small,
