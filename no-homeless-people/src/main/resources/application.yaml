@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: no-homeless-people
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/NoHomelessPeopleDB
+      database: NoHomelessPeopleDB
+
+  main:
+    allow-circular-references: true
+
+app:
+  jwt:
+    secret: RandomSecretKey
+    expiration-in-ms: 86400000
+
+google:
+  translate:
+    api-key: github_için_silindi
