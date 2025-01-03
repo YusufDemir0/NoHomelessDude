@@ -10,11 +10,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationService implements IAuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final IJwtProvider jwtProvider;
+
+    @Autowired
+    private IUserRepository userRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
@@ -50,11 +55,18 @@ public class AuthenticationService implements IAuthenticationService {
             // 4. JWT token oluştur
             String token = jwtProvider.generateToken(userPrincipal);
 
+            // findByUsername(...) -> Optional<User>
+            User user = userRepository.findByUsername(userPrincipal.getUsername())
+                    .orElseThrow(() -> new RuntimeException(
+                            "User not found with username: " + userPrincipal.getUsername()
+                    ));
+
             // 5. Yanıt olarak LoginResponse döndür
             return new LoginResponse(
                     token,
                     userPrincipal.getUsername(),
                     userPrincipal.getMail(),
+                    user.getPhoto(),
                     "Login successful");
         }
         catch (Exception ex) {

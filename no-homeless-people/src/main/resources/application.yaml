@@ -14,3 +14,7 @@ app:
   jwt:
     secret: RandomSecretKey
     expiration-in-ms: 86400000
+
+google:
+  translate:
+    api-key: github_için_silindi

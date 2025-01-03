@@ -87,7 +87,7 @@ public class JwtProvider implements IJwtProvider {
         Set<GrantedAuthority> authorities = Collections.emptySet();
 
         // UserPrincipal nesnesini oluştur
-        // (UserPrincipal içinde username -> mail döndürüyor olabilir)
+
         UserPrincipal userDetails = UserPrincipal.builder()
                 .id(userId)
                 .username(mailOrUsername)

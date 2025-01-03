@@ -1,5 +1,6 @@
 package com.nohomelesspeople.no_homeless_people.userservice;
 
+import com.nohomelesspeople.no_homeless_people.postservice.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,8 +16,14 @@ public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
 
+    private final PostService postService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserService(PostService postService) {
+        this.postService = postService;
+    }
 
     @Override
     public User saveUser(User user) {
@@ -44,21 +51,46 @@ public class UserService implements IUserService {
         User user = userRepository.findByMail(mail)
                 .orElseThrow(() -> new RuntimeException("User not found with mail: " + mail));
 
+        // Eski değerleri sakla
+        String oldUsername = user.getUsername();
+        String oldPhoto = user.getPhoto();
 
-        // Alanları güncelle (null check opsiyonel)
+        boolean usernameChanged = false;
+        boolean photoChanged = false;
+
+
         if (newData.getUsername() != null) {
             user.setUsername(newData.getUsername());
+            usernameChanged = !newData.getUsername().equals(oldUsername);
         }
         if (newData.getPassword() != null) {
-            // Şifreyi encode etme
             user.setPassword(passwordEncoder.encode(newData.getPassword()));
         }
         if (newData.getPhoto() != null) {
             user.setPhoto(newData.getPhoto());
+            photoChanged = !newData.getPhoto().equals(oldPhoto);
         }
 
-        // Güncellenmiş user'ı kaydet
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
+        // 4) Eğer username veya photo değiştiyse => ilgili postları güncelle
+        if (usernameChanged || photoChanged) {
+            postService.updatePostsCreatorInfo(
+                    oldUsername,
+                    updatedUser.getUsername(),
+                    oldPhoto,
+                    updatedUser.getPhoto()
+            );
+        }
+
+        return updatedUser;
+    }
+
+    public LocalDateTime getCreationTime(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı: " + username));
+
+        return user.getCreateTime();
     }
 
 }

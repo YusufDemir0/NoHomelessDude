@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface IPostRepository extends MongoRepository<Post, String> {
 
-    List<Post> findByUsername(String username);
+    // creator.username'e göre bulmak için:
+    List<Post> findByCreatorUsername(String username);
 }

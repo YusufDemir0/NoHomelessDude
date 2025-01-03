@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -36,5 +38,14 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    /**
+     * Kullanıcının oluşturulma zamanını döndürür.
+     */
+    @GetMapping("/date/{username}")
+    public ResponseEntity<LocalDateTime> getLastLoginTime(@PathVariable String username) {
+        LocalDateTime lastLoginTime = userService.getCreationTime(username);
+        return ResponseEntity.ok(lastLoginTime);
     }
 }

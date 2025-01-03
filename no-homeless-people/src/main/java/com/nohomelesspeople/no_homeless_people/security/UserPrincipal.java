@@ -30,7 +30,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Projede rol yoksa boş set döndürebilirsin
+        // Projede rol yoksa boş set döndürebiliriz
         return Collections.emptySet();
     }
 
