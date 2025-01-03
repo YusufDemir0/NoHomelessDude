@@ -2,6 +2,8 @@
 
 **No Homeless People**, evsiz veya yardıma ihtiyacı olan bireylerin konumlarının ve ihtiyaçlarının paylaşıldığı bir sosyal medya platformudur. Bu proje, topluluk desteğiyle yardıma muhtaç bireylerin topluma kazandırılmasını amaçlamaktadır.
 
+**Uygulamayı tanıtan video:** [Video](https://drive.google.com/drive/folders/1i3vbffN3owlJtaHAP08gcMzx0h6AhVqn?usp=sharing)
+
 ## Özellikler
 
 - **Akış (Feed):** Kullanıcılar tarafından oluşturulan yardım taleplerinin görüntülendiği ekran.
