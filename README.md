@@ -34,15 +34,16 @@
    git clone https://github.com/YusufDemir0/NoHomelessPeople.git
    cd NoHomelessPeople
 3. **Bağımlılıkları Yükleyin:**
-
+```bash
 npm install
+
 Çevre Değişkenlerini Ayarlayın (.env):
 
 **.env dosyasını oluşturun ve MongoDB bağlantı bilgilerini ekleyin:**
 
 MONGO_URI=your_mongodb_connection_string
 Uygulamayı Çalıştırın:
-
+```bash
 expo start
 
 **Kullanım**
@@ -52,17 +53,22 @@ Profil bilgilerinizi düzenleyin ve ihtiyaç duyduğunuz gönderileri yönetin.
 
 **Katkı Sağlama**
 Projeye katkıda bulunmak için aşağıdaki adımları takip edin:
-
 Depoyu fork edin.
 Yeni bir dal oluşturun:
 
+```bash
 git checkout -b feature/your-feature-name
+
 Değişikliklerinizi yapın ve commit edin:
 
+```bash
 git commit -m "Add your feature description"
+
 Dalınızı gönderin:
- 
+
+```bash 
 git push origin feature/your-feature-name
+
 Bir pull request gönderin.
 
 **İletişim**
