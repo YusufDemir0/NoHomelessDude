@@ -30,12 +30,13 @@
    - SQLite
 
 2. **Depoyu Klonlayın:**
-   ```bash
-   git clone https://github.com/YusufDemir0/NoHomelessPeople.git
+
+   bash git clone https://github.com/YusufDemir0/NoHomelessPeople.git
    cd NoHomelessPeople
-3. **Bağımlılıkları Yükleyin:**
-   ```bash
-   npm install
+
+4. **Bağımlılıkları Yükleyin:**
+
+   bash npm install
 
 Çevre Değişkenlerini Ayarlayın (.env):
 
@@ -44,8 +45,8 @@
 MONGO_URI=your_mongodb_connection_string
 
 Uygulamayı Çalıştırın:
-   ```bash
-   expo start
+ 
+  bash expo start
 
 **Kullanım**
 Uygulamayı başlatın ve bir hesap oluşturun.
@@ -57,18 +58,15 @@ Projeye katkıda bulunmak için aşağıdaki adımları takip edin:
 Depoyu fork edin.
 Yeni bir dal oluşturun:
 
-   ```bash
-   git checkout -b feature/your-feature-name
+   bash git checkout -b feature/your-feature-name
 
 Değişikliklerinizi yapın ve commit edin:
 
-   ```bash
-   git commit -m "Add your feature description"
+   bash git commit -m "Add your feature description"
 
 Dalınızı gönderin:
 
-   ```bash 
-   git push origin feature/your-feature-name
+   bash git push origin feature/your-feature-name
 
 Bir pull request gönderin.
 
