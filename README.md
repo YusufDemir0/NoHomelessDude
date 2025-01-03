@@ -40,8 +40,9 @@
 Çevre Değişkenlerini Ayarlayın (.env):
 
 **.env dosyasını oluşturun ve MongoDB bağlantı bilgilerini ekleyin:**
+   ```bash
+   MONGO_URI=your_mongodb_connection_string
 
-MONGO_URI=your_mongodb_connection_string
 Uygulamayı Çalıştırın:
    ```bash
    expo start
