@@ -88,3 +88,8 @@ Egemen Çakır-200201052
 Halil Asav-210201097
 
 İletişi Mail: yusufdemir4154@gmail.com
+halil.asav34@gmail.com
+oac.09cnc@gmail.com
+cakiregemen0@gmail.com
+
+
