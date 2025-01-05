@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { DeviceEventEmitter, Text, View, Button } from 'react-native';
 
 // Yeni post yayınlamak için fonksiyon
@@ -24,4 +24,4 @@ const PostBroadcaster = () => {
   );
 };
 
-export default PostBroadcaster;
+export default PostBroadcaster;*/
