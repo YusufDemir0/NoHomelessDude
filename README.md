@@ -10,6 +10,7 @@
 - **Profil (Profile):** Kullanıcının kendi profil bilgilerini düzenleyebildiği ve oluşturduğu yardım taleplerini yönetebildiği ekran.
 - **Gönderi Paylaşımı:** İhtiyaç açıklaması, ihtiyaç listesi ve konum bilgisi içeren gönderiler oluşturma.
 - **Offline Çalışma:** SQLite kullanılarak veriler yerel olarak saklanır.
+- **NFC ile Gönderi Paylaşımı:** Çevrim dışı gönderi paylaşımı için nfc bağlantısı.
 - **Dil Çevirisi:** Yapay zeka tabanlı çeviri teknolojisi ile gönderiler farklı dillere çevrilebilir.
 - **Konum Tabanlı Öneriler:** GPS kullanılarak yakın çevredeki ihtiyaç sahiplerini önerme.
 - **Bildirimler:** Yardım taleplerine hızlı erişim için mobil bildirimler.
