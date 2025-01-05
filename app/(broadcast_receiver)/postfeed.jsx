@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { View, Text, DeviceEventEmitter } from 'react-native';
 
 // Veritabanından tüm postları getiren fonksiyon
@@ -50,4 +50,4 @@ const PostFeed = () => {
   );
 };
 
-export default PostFeed;
+export default PostFeed;*/
