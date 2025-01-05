@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+/*import React, { useEffect } from 'react';
 import { DeviceEventEmitter, Text, View, Button } from 'react-native';
 
 // Yeni postları dinlemek için custom hook
@@ -35,6 +35,6 @@ const NewPostListenerComponent = () => {
       />
     </View>
   );
-};
+};*/
 
 export default NewPostListenerComponent;
