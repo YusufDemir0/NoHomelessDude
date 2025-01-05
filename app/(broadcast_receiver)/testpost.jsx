@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 import { View, TextInput, Button, DeviceEventEmitter, Text } from 'react-native';
 
 // Veritabanına yeni post ekleme fonksiyonu (örnek olarak burada kullanılıyor)
@@ -50,3 +50,4 @@ const NewPost = () => {
 };
 
 export default NewPost;
+*/
